@@ -10,6 +10,7 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter:
     sdk: flutter
+  page_transition: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -27,4 +28,11 @@ flutter:
       - asset: assets/fonts/poppins/Poppins-Italic.ttf
         style: italic
       - asset: assets/fonts/poppins/Poppins-Bold.ttf
+        weight: 700
+  - family: Product-sans
+    fonts:
+      - asset: assets/fonts/product-sans/Product Sans Regular.ttf
+      - asset: assets/fonts/product-sans/Product Sans Italic.ttf
+        style: italic
+      - asset: assets/fonts/product-sans/Product Sans Bold.ttf
         weight: 700

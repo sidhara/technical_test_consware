@@ -61,3 +61,29 @@ class OnboardingSplash extends StatelessWidget {
     );
   }
 }
+
+class Splash extends StatelessWidget {
+  final Color color;
+  final String imgRoute;
+  const Splash({Key? key, required this.color, required this.imgRoute}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final double width=getDeviceWidth(context),
+    height=getDeviceHeight(context);
+    return Container(
+      color: color,
+      child: Stack(
+        children: [
+          Positioned(
+            top: percentage(height, 35),
+            height: percentage(height, 30),
+            left: percentage(width, 15),
+            width: percentage(width, 70),
+            child: Image.asset(imgRoute)
+          )
+        ],
+      )
+    );
+  }
+}
