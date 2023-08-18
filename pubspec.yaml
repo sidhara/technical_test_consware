@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.1.0 <4.0.0'
 
 dependencies:
+  carousel_slider: ^4.2.1
   flutter:
     sdk: flutter
 
@@ -17,3 +18,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
+  fonts:
+  - family: Poppins
+    fonts:
+      - asset: assets/fonts/poppins/Poppins-Regular.ttf
+      - asset: assets/fonts/poppins/Poppins-Italic.ttf
+        style: italic
+      - asset: assets/fonts/poppins/Poppins-Bold.ttf
+        weight: 700
