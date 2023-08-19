@@ -33,17 +33,13 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    List inputTexts = [
-      "Nombre completo",
-      "Escribe tu nombre",
-      "Identificación",
-      "Escribe tu número de identificación",
-      "Email",
-      "Uname@mail.com",
-      "Contraseña",
-      "Password"
-    ];
-    
+    List inputTexts = ["Nombre completo","Escribe tu nombre","Identificación",
+      "Escribe tu número de identificación","Email","Uname@mail.com","Contraseña",
+      "Password"];
+    List buttonTexts=["Acepto los ","Términos ","y ","Condiciones ","y la ",
+      "Política de privacidad ","de Banca créditos","Continuar",
+      "¿Ya tienes una cuenta?","Inicia sesión"];
+
     return GestureDetector(
         onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
@@ -55,7 +51,7 @@ class _SignUpState extends State<SignUp> {
           header("Banca créditos"),
           title("Regístrate", "solo te tomara unos minutos"),
           inputs(inputTexts),
-          buttons("Continuar")
+          buttons(buttonTexts)
         ])));
   }
 
@@ -205,7 +201,7 @@ class _SignUpState extends State<SignUp> {
         ]));
   }
 
-  Positioned buttons(String registerText) {
+  Positioned buttons(List text) {
     return Positioned(
       width: percentage(width, 80),
       left: percentage(width, 10),
@@ -232,25 +228,25 @@ class _SignUpState extends State<SignUp> {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text: "Acepto los ",
+                        text: text[0],
                         style: TextStyle(color: AppColor.blackFont)),
                       TextSpan(
-                        text: "Términos ", 
+                        text: text[1], 
                         style: TextStyle(color: AppColor.purple)),
                       TextSpan(
-                        text: "y ", 
+                        text: text[2], 
                         style: TextStyle(color: AppColor.blackFont)),
                       TextSpan(
-                        text: "Condiciones ", 
+                        text: text[3], 
                         style: TextStyle(color: AppColor.purple)),
                       TextSpan(
-                        text: "y la ", 
+                        text: text[4], 
                         style: TextStyle(color: AppColor.blackFont)),
                       TextSpan(
-                        text: "Política de privacidad ", 
+                        text: text[5], 
                         style: TextStyle(color: AppColor.purple)),
                       TextSpan(
-                        text: "de Banca créditos", 
+                        text: text[6], 
                         style: TextStyle(color: AppColor.blackFont)),
                     ],
                   ),
@@ -265,7 +261,7 @@ class _SignUpState extends State<SignUp> {
             borderRadius: 10,
             backgroundColor: AppColor.purple,
             textColor: Colors.white,
-            text: "Continuar",
+            text: text[7],
             onTap: () => onPressed(0)
           ),
           const SizedBox(height: 5),
@@ -273,7 +269,7 @@ class _SignUpState extends State<SignUp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "¿Ya tienes una cuenta?",
+                text[8],
                 style: TextStyle(
                   fontSize: 14,
                   fontFamily: 'Product-sans',
@@ -284,7 +280,7 @@ class _SignUpState extends State<SignUp> {
               ),
               const SizedBox(width: 5),
               TextOnlyButton(
-                text: "Inicia sesión",
+                text: text[9],
                 fontSize: 14,
                 color: AppColor.purple,
                 onTap: () => onPressed(1),
