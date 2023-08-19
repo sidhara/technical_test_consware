@@ -5,6 +5,7 @@ import 'package:technical_test_consware/components/buttons.dart';
 import 'package:technical_test_consware/components/colors.dart';
 import 'package:technical_test_consware/components/splash_screen.dart';
 import 'package:technical_test_consware/frames/login.dart';
+import 'package:technical_test_consware/frames/sign_up.dart';
 import 'package:technical_test_consware/logic.dart/logic.dart';
 
 class Branding extends StatefulWidget {
@@ -147,7 +148,15 @@ class _PresentationState extends State<Presentation> {
         )
       );
     } else {//register
-      print('forgot password');
+      Navigator.push(
+        context,
+        PageTransition(
+          duration: const Duration(milliseconds: 500),
+          type: PageTransitionType.bottomToTop, 
+          child: const SignUp(),
+          childCurrent: const Presentation()
+        )
+      );
     }
   }
 }

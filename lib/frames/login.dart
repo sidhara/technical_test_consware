@@ -31,18 +31,22 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
-        child: Scaffold(
-            body: Stack(children: [
-          background(),
-          header("Banca créditos"),
-          title("Inicia sesión o continua,"," solo te tomara unos minutos"),
-          loginInputs("Email o Usuario","Contraseña","Recordarme","¿Olvide mi contraseña?"),
-          loginButtons("Iniciar sesión","Ingresa con Google","Ingresa con Apple","¿no tienes cuenta?","Registrate")
-        ])));
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            background(),
+            header("Banca créditos"),
+            title("Inicia sesión o continua,"," solo te tomara unos minutos"),
+            loginInputs("Email o Usuario","Contraseña","Recordarme","¿Olvide mi contraseña?"),
+            loginButtons("Iniciar sesión","Ingresa con Google","Ingresa con Apple","¿no tienes cuenta?","Registrate")
+          ]
+        )
+      )
+    );
   }
 
   SizedBox background() {
@@ -53,9 +57,10 @@ class _LoginState extends State<Login> {
         children: [
           Positioned(right: 0, top: 0, child: Image.asset(bgDraw1, scale: 1.5)),
           Positioned(
-              left: 0,
-              bottom: percentage(height, 5),
-              child: Image.asset(bgDraw2, scale: 1))
+            left: 0,
+            bottom: percentage(height, 5),
+            child: Image.asset(bgDraw2, scale: 1)
+          )
         ],
       ),
     );
@@ -74,11 +79,12 @@ class _LoginState extends State<Login> {
             Text(
               text,
               style: TextStyle(
-                  fontSize: 28,
-                  fontFamily: 'Product-sans',
-                  color: AppColor.blackFont,
-                  fontWeight: FontWeight.normal,
-                  decoration: TextDecoration.none),
+                fontSize: 28,
+                fontFamily: 'Product-sans',
+                color: AppColor.blackFont,
+                fontWeight: FontWeight.normal,
+                decoration: TextDecoration.none
+              ),
             )
           ],
         ));
@@ -136,18 +142,20 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(//remember login
-                    children: [
-                  const AnimatedSwitch(),
-                  const SizedBox(width: 10),
-                  Text(
-                    textRemember,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
+                  children: [
+                    const AnimatedSwitch(),
+                    const SizedBox(width: 10),
+                    Text(
+                      textRemember,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
-                        color: AppColor.blackFont),
-                  )
-                ]),
+                        color: AppColor.blackFont
+                      ),
+                    )
+                  ]
+                ),
                 TextOnlyButton(//forgot your password
                   text: textForgot,
                   fontSize: 14,
@@ -202,20 +210,21 @@ class _LoginState extends State<Login> {
             onTap: () => onPressed(3)
           ),
           const SizedBox(height: 15),
-          Row(
+          Row(//Register
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 textRegister,
                 style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Product-sans',
-                    color: AppColor.blackFont,
-                    fontWeight: FontWeight.normal,
-                    decoration: TextDecoration.none),
+                  fontSize: 14,
+                  fontFamily: 'Product-sans',
+                  color: AppColor.blackFont,
+                  fontWeight: FontWeight.normal,
+                  decoration: TextDecoration.none
+                ),
               ),
               const SizedBox(width: 5),
-              TextOnlyButton(//Register
+              TextOnlyButton(
                 text: textSignUp,
                 fontSize: 14,
                 color: AppColor.purple,
