@@ -1,9 +1,12 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:technical_test_consware/components/animated_switch.dart';
 import 'package:technical_test_consware/components/buttons.dart';
 import 'package:technical_test_consware/components/colors.dart';
 import 'package:technical_test_consware/components/textfield.dart';
+import 'package:technical_test_consware/frames/home.dart';
 import 'package:technical_test_consware/frames/sign_up.dart';
 import 'package:technical_test_consware/logic.dart/logic.dart';
 
@@ -38,14 +41,17 @@ class _LoginState extends State<Login> {
         if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
       },
       child: Scaffold(
-        body: Stack(
-          children: [
-            background(),
-            header("Banca créditos"),
-            title("Inicia sesión o continua,"," solo te tomara unos minutos"),
-            loginInputs("Email o Usuario","Contraseña","Recordarme","¿Olvide mi contraseña?"),
-            loginButtons("Iniciar sesión","Ingresa con Google","Ingresa con Apple","¿no tienes cuenta?","Registrate")
-          ]
+        body: SingleChildScrollView(
+          child: 
+          Stack(
+            children: [
+              background(),
+              header("Banca créditos"),
+              title("Inicia sesión o continua,"," solo te tomara unos minutos"),
+              loginInputs("Email o Usuario","Contraseña","Recordarme","¿Olvide mi contraseña?"),
+              loginButtons("Iniciar sesión","Ingresa con Google","Ingresa con Apple","¿no tienes cuenta?","Registrate")
+            ]
+          )
         )
       )
     );
@@ -70,26 +76,27 @@ class _LoginState extends State<Login> {
 
   Positioned header(String text) {
     return Positioned(
-        width: width - 10,
-        left: 5,
-        top: percentage(height, 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(bankLogo, scale: 2.4),
-            const SizedBox(width: 10),
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 28,
-                fontFamily: 'Product-sans',
-                color: AppColor.blackFont,
-                fontWeight: FontWeight.normal,
-                decoration: TextDecoration.none
-              ),
-            )
-          ],
-        ));
+      width: width - 10,
+      left: 5,
+      top: percentage(height, 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(bankLogo, scale: 2.4),
+          const SizedBox(width: 10),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 28,
+              fontFamily: 'Product-sans',
+              color: AppColor.blackFont,
+              fontWeight: FontWeight.normal,
+              decoration: TextDecoration.none
+            ),
+          )
+        ],
+      )
+    );
   }
 
   Positioned title(String textBold, String text) {
@@ -241,15 +248,27 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void onPressed(int option) {
+  Future<void> onPressed(int option) async {
     if (option == 0) {//login
-      print('login, remember=$rememberPassword');
+      bool response = await login(emailController.text, passwordController.text, rememberPassword);
+      if (!context.mounted) return;//to control passing context between async process
+      Navigator.pop(context);
+      if(response)Navigator.pushAndRemoveUntil(
+        context,
+        PageTransition(
+          duration: const Duration(milliseconds: 500),
+          type: PageTransitionType.bottomToTop, 
+          child: const Home(),
+          childCurrent: const Login()
+        ),
+        (route) => false
+      );
     } else if (option == 1) {//forgot password
-      print('forgot password');
+      //out of the scope
     } else if (option == 2) {//login google
-      print('login google');
+      //out of the scope
     } else if (option == 3) {//login apple
-      print('login apple');
+      //out of the scope
     } else {//sign up
       Navigator.push(
         context,

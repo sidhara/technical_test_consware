@@ -3,6 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:technical_test_consware/components/buttons.dart';
 import 'package:technical_test_consware/components/colors.dart';
 import 'package:technical_test_consware/components/textfield.dart';
+import 'package:technical_test_consware/frames/home.dart';
 import 'package:technical_test_consware/frames/login.dart';
 import 'package:technical_test_consware/logic.dart/logic.dart';
 
@@ -41,18 +42,24 @@ class _SignUpState extends State<SignUp> {
       "¿Ya tienes una cuenta?","Inicia sesión"];
 
     return GestureDetector(
-        onTap: () {
+      onTap: () {
           FocusScopeNode currentFocus = FocusScope.of(context);
           if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-        },
-        child: Scaffold(
-            body: Stack(children: [
-          background(),
-          header("Banca créditos"),
-          title("Regístrate", "solo te tomara unos minutos"),
-          inputs(inputTexts),
-          buttons(buttonTexts)
-        ])));
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Stack(
+            children: [
+            background(),
+            header("Banca créditos"),
+            title("Regístrate", "solo te tomara unos minutos"),
+            inputs(inputTexts),
+            buttons(buttonTexts)
+            ]
+          )
+        )
+      )
+    );
   }
 
   SizedBox background() {
@@ -293,9 +300,37 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  void onPressed(int option) {
+  Future<void> onPressed(int option) async {
     if (option == 0) {//register
-      print('register, checkmark: $isChecked');
+      if(!isChecked){
+        alertPopUp(context, 'Error!', 'Debe marcar la casilla de Términos y Condiciones para poder registrarse');
+      }else{
+        if(nameController.text.isEmpty||idController.text.isEmpty||
+            emailController.text.isEmpty||passwordController.text.isEmpty){
+          alertPopUp(context, 'Error!', 'Debe llenar todos los campos para poder registrarse');
+        }
+        String response=await register(nameController.text, idController.text, 
+          emailController.text, passwordController.text);
+        if (!context.mounted) return;//to control passing context between async process
+        Navigator.pop(context);
+        if(response=="successful"){
+          login(emailController.text, passwordController.text, false);
+          Navigator.pushAndRemoveUntil(
+            context,
+            PageTransition(
+              duration: const Duration(milliseconds: 500),
+              type: PageTransitionType.bottomToTop, 
+              child: const SuccessfulRegister(),
+              childCurrent: const SignUp()
+            ),
+            (route) => false
+          );
+        }else if(response=="user already exist"){
+          alertPopUp(context, 'Error!', 'El usuario ya existe');
+        }else{
+          alertPopUp(context, 'Error!', 'Error en el sistema al momento de guardar');
+        }
+      }
     } else{//login
       Navigator.push(
         context,
@@ -305,6 +340,142 @@ class _SignUpState extends State<SignUp> {
           child: const Login(),
           childCurrent: const SignUp()
         )
+      );
+    }
+  }
+}
+
+//------------------------------------------------------------------------------
+
+class SuccessfulRegister extends StatefulWidget {
+  const SuccessfulRegister({super.key});
+
+  @override
+  State<SuccessfulRegister> createState() => _SuccessfulRegisterState();
+}
+
+class _SuccessfulRegisterState extends State<SuccessfulRegister> {
+  @override
+  void initState() {
+    super.initState();
+    controlDeviceOrientation();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          background(),
+          logo(),
+          header("Registro exitoso"),
+          title("Hemos guardado tus credenciales de forma exitosa, Presiona continuar para seguir adelante."),
+          button("Continuar")
+        ],
+      )
+    );
+  }
+
+  late final double width = getDeviceWidth(context),
+    height = getDeviceHeight(context);
+
+  Positioned background(){
+    return Positioned(//shadow
+      top: 0,
+      child: SizedBox(
+        width: width,
+        height: 0,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            boxShadow: [
+              BoxShadow(
+                color: AppColor.purple,
+                blurRadius: 5000,
+                spreadRadius: 125
+              )
+            ],
+          ),
+        ),
+      )
+    );
+  }
+
+  Positioned logo(){
+    return Positioned(
+      width: percentage(width, 80),
+      left: percentage(width, 10),
+      top: percentage(height, 15),
+      child: Image.asset(registerLogo)
+    );
+  }
+
+  Positioned header(String text) {
+    return Positioned(
+      width: width - 10,
+      left: 5,
+      top: percentage(height, 47),
+      child: Text(
+        textAlign: TextAlign.center,
+        text,
+        style: TextStyle(
+          fontSize: 28,
+          fontFamily: 'Product-sans',
+          color: AppColor.blackFont,
+          fontWeight: FontWeight.bold,
+          decoration: TextDecoration.none
+        ),
+      )
+    );
+  }
+
+  Positioned title(String text) {
+    return Positioned(
+      width: percentage(width, 80),
+      left: percentage(width, 10),
+      top: percentage(height, 54),
+      child: Text(
+        textAlign: TextAlign.center,
+        text,
+        style: TextStyle(
+          fontSize: 16,
+          fontFamily: 'Product-sans',
+          color: AppColor.blackFont,
+          fontWeight: FontWeight.normal,
+          decoration: TextDecoration.none
+        ),
+      )
+    );
+  }  
+
+  Positioned button(String textLogin){
+    return Positioned(
+      width: percentage(width, 80),
+      left: percentage(width, 10),
+      top: percentage(height, 65),
+      child: LargeRectangularButton(//login
+        fontFamily: 'Product-sans',
+        width: percentage(width, 80),
+        borderRadius: 10,
+        backgroundColor: AppColor.purple,
+        textColor: Colors.white,
+        text: textLogin,
+        onTap: () => onPressed(0)
+      )
+    );
+  }
+
+  void onPressed(int option) {
+    if (option == 0) {//continue to home
+      Navigator.pushAndRemoveUntil(
+        context,
+        PageTransition(
+          duration: const Duration(milliseconds: 500),
+          type: PageTransitionType.bottomToTop, 
+          child: const Home(),
+          childCurrent: const SuccessfulRegister()
+        ),
+        (route) => false
       );
     }
   }
