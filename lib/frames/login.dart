@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:technical_test_consware/components/animated_switch.dart';
 import 'package:technical_test_consware/components/buttons.dart';
 import 'package:technical_test_consware/components/colors.dart';
 import 'package:technical_test_consware/components/textfield.dart';
+import 'package:technical_test_consware/frames/sign_up.dart';
 import 'package:technical_test_consware/logic.dart/logic.dart';
 
 class Login extends StatefulWidget {
@@ -117,56 +119,57 @@ class _LoginState extends State<Login> {
 
   Positioned loginInputs(String textEmail,String textPassword,String textRemember,String textForgot) {
     return Positioned(
-        width: percentage(width, 80),
-        left: percentage(width, 10),
-        top: percentage(height, 40),
-        child: Column(
-          children: [
-            TextFieldCustom(//email
-              color: AppColor.purple,
-              text: textEmail,
-              controller: emailController,
-              border: true,
-              user: true,
-            ),
-            const SizedBox(height: 20),
-            TextFieldCustom(//password
-              color: AppColor.purple,
-              password: true,
-              controller: passwordController,
-              text: textPassword,
-              border: true,
-            ),
-            const SizedBox(height: 20),
-            Row(//row of remember login and forgot password
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(//remember login
-                  children: [
-                    const AnimatedSwitch(),
-                    const SizedBox(width: 10),
-                    Text(
-                      textRemember,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: AppColor.blackFont
-                      ),
-                    )
-                  ]
-                ),
-                TextOnlyButton(//forgot your password
-                  text: textForgot,
-                  fontSize: 14,
-                  color: AppColor.purple,
-                  onTap: () => onPressed(1),
-                  fontFamily: 'Product-sans',
-                )
-              ],
-            )
-          ],
-        ));
+      width: percentage(width, 80),
+      left: percentage(width, 10),
+      top: percentage(height, 40),
+      child: Column(
+        children: [
+          TextFieldCustom(//email
+            color: AppColor.purple,
+            text: textEmail,
+            controller: emailController,
+            border: true,
+            user: true,
+          ),
+          const SizedBox(height: 20),
+          TextFieldCustom(//password
+            color: AppColor.purple,
+            password: true,
+            controller: passwordController,
+            text: textPassword,
+            border: true,
+          ),
+          const SizedBox(height: 20),
+          Row(//row of remember login and forgot password
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(//remember login
+                children: [
+                  const AnimatedSwitch(),
+                  const SizedBox(width: 10),
+                  Text(
+                    textRemember,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: AppColor.blackFont
+                    ),
+                  )
+                ]
+              ),
+              TextOnlyButton(//forgot your password
+                text: textForgot,
+                fontSize: 14,
+                color: AppColor.purple,
+                onTap: () => onPressed(1),
+                fontFamily: 'Product-sans',
+              )
+            ],
+          )
+        ],
+      )
+    );
   }
 
   Positioned loginButtons(String textLogin,String textLoginGoogle,String textLoginApple,String textRegister,String textSignUp) {
@@ -248,7 +251,15 @@ class _LoginState extends State<Login> {
     } else if (option == 3) {//login apple
       print('login apple');
     } else {//sign up
-      print('sign up');
+      Navigator.push(
+        context,
+        PageTransition(
+          duration: const Duration(milliseconds: 500),
+          type: PageTransitionType.leftToRight, 
+          child: const SignUp(),
+          childCurrent: const Login()
+        )
+      );
     }
   }
 }

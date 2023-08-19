@@ -152,7 +152,7 @@ class _PresentationState extends State<Presentation> {
         context,
         PageTransition(
           duration: const Duration(milliseconds: 500),
-          type: PageTransitionType.bottomToTop, 
+          type: PageTransitionType.topToBottom, 
           child: const SignUp(),
           childCurrent: const Presentation()
         )
