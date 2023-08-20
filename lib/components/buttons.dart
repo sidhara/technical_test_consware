@@ -124,7 +124,7 @@ class _DropdownButtonCustomState extends State<DropdownButtonCustom> {
         onChanged: (item)=>setState(() {
           selectedItem=item;
           setSelectedItem(selectedItem!);
-        })// setState(()=>selectedItem=item)
+        })
       ),
     );
   }
