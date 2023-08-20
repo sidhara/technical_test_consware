@@ -12,6 +12,7 @@ class TextFieldCustom extends StatefulWidget {
   final bool numeric;
   final bool enabled;
   final double height;
+  final Function(String)? onChange;
 
   const TextFieldCustom({
     Key? key,
@@ -26,6 +27,7 @@ class TextFieldCustom extends StatefulWidget {
     this.numeric = false,
     this.enabled = true,
     this.height = 70,
+    this.onChange,
   }) : super(key: key);
 
   @override
@@ -53,6 +55,7 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
         obscureText: hidden,
         obscuringCharacter: "•",
         controller: widget.controller,
+        onChanged: widget.onChange,
         decoration: InputDecoration(
           hintText: widget.text,
           helperText: widget.helperText!=''?widget.helperText:null,

@@ -1,10 +1,10 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
-
 import 'package:flutter/material.dart';
 import 'package:technical_test_consware/components/buttons.dart';
 import 'package:technical_test_consware/components/colors.dart';
 import 'package:technical_test_consware/components/textfield.dart';
 import 'package:technical_test_consware/logic.dart/logic.dart';
+import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -230,7 +230,8 @@ class _HomeState extends State<Home> {
                 fontFamily: 'Product-sans',
                 color: AppColor.blackFont,
                 fontWeight: FontWeight.normal,
-                decoration: TextDecoration.none),
+                decoration: TextDecoration.none
+              ),
           ),
           const SizedBox(height: 13),
           TextFieldCustom(
@@ -240,6 +241,14 @@ class _HomeState extends State<Home> {
             controller: salaryController,
             border: true,
             helperText: text[3],
+            onChange: (val)=>{
+              setState(() {
+                double salary=double.parse(salaryController.text);
+                double amountToLend=(salary*7)/0.15;
+                final oCcy = NumberFormat("#,##0.00", "en_US");
+                lendAmountController.text='\$ ${oCcy.format(amountToLend)}';
+              })
+            },
           ),
           const SizedBox(height: 13),
           TextFieldCustom(//amount available to lend
@@ -304,10 +313,25 @@ class _HomeState extends State<Home> {
   void onPressed(int option) {
     if (option == 0) {//notifications
       //out of scope
+      alertPopUp(context, 'Notificaciónes', 'Información de notificaciónes');
     }else if(option == 1){
+      //out of scope
       alertPopUp(context, 'Info', 'Información de credito');
     }else{//simular
-
+      if(monthController.text.length>2) 
+        alertPopUp(context, 'Error', 'La cantidad de meses debe ser minimo 12 y maximo 84');
+      else{
+        int month=int.parse(monthController.text);
+        if(month<12||month>84)
+          alertPopUp(context, 'Error', 'La cantidad de meses debe ser minimo 12 y maximo 84');
+        else if(salaryController.text.isEmpty||double.parse(salaryController.text)<=0)
+          alertPopUp(context, 'Error', 'El salario base debe ser un numero valido superior a cero');
+        else if(getSelectedItem()=='Selecciona el tipo de créditos')
+          alertPopUp(context, 'Error', 'Escoja un tipo de crédito');
+        else{
+          
+        }
+      }
     }
   }
 }
