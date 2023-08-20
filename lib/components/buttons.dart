@@ -95,7 +95,6 @@ class _DropdownButtonCustomState extends State<DropdownButtonCustom> {
   @override
   Widget build(BuildContext context) {
     selectedItem=widget.items[0];
-    setSelectedItem(selectedItem!);
     return SizedBox(
       width: widget.width,
       height: widget.height!=58?widget.height:58,
@@ -123,13 +122,13 @@ class _DropdownButtonCustomState extends State<DropdownButtonCustom> {
         )).toList(),
         onChanged: (item)=>setState(() {
           selectedItem=item;
-          setSelectedItem(selectedItem!);
+          setSelectedItem(item!);
         })
       ),
     );
   }
 }
-String selectedItem='0';
+String selectedItem='';
 String getSelectedItem(){
   return selectedItem;
 }

@@ -52,6 +52,11 @@ class _HomeState extends State<Home> {
     'Digíta tu salario para calcular el préstamo que necesitas','\$ 0',
     '¿A cuántos meses?','48','Elije un plazo desde 12 hasta 84 meses',
     'simular'];  
+  List errorText=['Error','La cantidad de meses debe ser minimo 12 y maximo 84',
+    'El salario base debe ser un numero valido superior a cero',
+    'Escoja un tipo de crédito','Digite los campos'];
+  List notificationText=['Notificaciónes','Información de notificaciónes','Info'
+    ,'Información de credito'];
 
   int index=0;
   NavigationBarTheme navbar(String text1,String text2){
@@ -82,6 +87,7 @@ class _HomeState extends State<Home> {
     Stack(
       children: [
         background(),
+        bellButton(),
         FutureBuilder<String>(
           future: name, 
           builder: (BuildContext context, AsyncSnapshot<String>snapshot)  
@@ -94,7 +100,6 @@ class _HomeState extends State<Home> {
               );
           }
         ),
-        bellButton(),
         title("Simulador de crédito"),
         subtitle("Ingresa los datos para tu crédito según lo que necesites"),
         inputs(textlist, dropdownlist),
@@ -294,7 +299,7 @@ class _HomeState extends State<Home> {
         backgroundColor: AppColor.purple,
         textColor: Colors.white,
         text: text,
-        onTap: () => onPressed(2)
+        onTap: () => onPressed(3)
       )
     );
   }
@@ -313,24 +318,28 @@ class _HomeState extends State<Home> {
   void onPressed(int option) {
     if (option == 0) {//notifications
       //out of scope
-      alertPopUp(context, 'Notificaciónes', 'Información de notificaciónes');
-    }else if(option == 1){
+      alertPopUp(context, notificationText[0], notificationText[1]);
+    }else if(option == 1){//information
       //out of scope
-      alertPopUp(context, 'Info', 'Información de credito');
+      alertPopUp(context, notificationText[2], notificationText[3]);
     }else{//simular
-      if(monthController.text.length>2) 
-        alertPopUp(context, 'Error', 'La cantidad de meses debe ser minimo 12 y maximo 84');
-      else{
-        int month=int.parse(monthController.text);
-        if(month<12||month>84)
-          alertPopUp(context, 'Error', 'La cantidad de meses debe ser minimo 12 y maximo 84');
-        else if(salaryController.text.isEmpty||double.parse(salaryController.text)<=0)
-          alertPopUp(context, 'Error', 'El salario base debe ser un numero valido superior a cero');
-        else if(getSelectedItem()=='Selecciona el tipo de créditos')
-          alertPopUp(context, 'Error', 'Escoja un tipo de crédito');
+      try {
+        if(monthController.text.length>2) 
+          alertPopUp(context, errorText[0], errorText[1]);
         else{
-          
+          int month=int.parse(monthController.text);
+          if(month<12||month>84)
+            alertPopUp(context, errorText[0], errorText[1]);
+          else if(salaryController.text.isEmpty||double.parse(salaryController.text)<=0)
+            alertPopUp(context, errorText[0], errorText[2]);
+          else if(getSelectedItem()==dropdownlist[0]||getSelectedItem()=='')
+            alertPopUp(context, errorText[0], errorText[3]);
+          else{
+            print('successful');
+          }
         }
+      } catch (e) {
+        alertPopUp(context, errorText[0], errorText[4]);
       }
     }
   }

@@ -263,6 +263,7 @@ class _LoginState extends State<Login> {
         ),
         (route) => false
       );
+      else alertPopUp(context, 'Error', 'Usuario no existe'); 
     } else if (option == 1) {//forgot password
       //out of the scope
     } else if (option == 2) {//login google
