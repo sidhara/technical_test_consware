@@ -75,3 +75,52 @@ class TextOnlyButton extends StatelessWidget {
     );
   }
 }
+
+class DropdownButtonCustom extends StatefulWidget {
+  final List items;
+  final double width;
+  final double height;
+  final bool border;
+  final Color borderColor;
+  const DropdownButtonCustom({super.key, required this.items,
+    required this.width, this.borderColor=Colors.grey, this.border=false,
+    this.height=58});
+
+  @override
+  State<DropdownButtonCustom> createState() => _DropdownButtonCustomState();
+}
+
+class _DropdownButtonCustomState extends State<DropdownButtonCustom> {
+  @override
+  Widget build(BuildContext context) {
+    String? selectedItem=widget.items[0];
+    return SizedBox(
+      width: widget.width,
+      height: widget.height!=58?widget.height:58,
+      child: DropdownButtonFormField<String>(
+        isExpanded: true,
+        decoration: widget.border?InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(width: 2,color: widget.borderColor)
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(width: 2,color: widget.borderColor)
+          )
+        ):null,
+        value: selectedItem,
+        items: widget.items.map((item)=>DropdownMenuItem<String>(
+          value: item,
+          child: Text(
+            item, 
+            style: const TextStyle(
+              fontSize: 15
+            )
+          )
+        )).toList(),
+        onChanged: (item)=>setState(()=>selectedItem=item)
+      ),
+    );
+  }
+}

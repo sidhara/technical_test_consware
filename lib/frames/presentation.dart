@@ -1,9 +1,12 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:technical_test_consware/components/buttons.dart';
 import 'package:technical_test_consware/components/colors.dart';
 import 'package:technical_test_consware/components/splash_screen.dart';
+import 'package:technical_test_consware/frames/home.dart';
 import 'package:technical_test_consware/frames/login.dart';
 import 'package:technical_test_consware/frames/sign_up.dart';
 import 'package:technical_test_consware/logic.dart/logic.dart';
@@ -136,8 +139,25 @@ class _PresentationState extends State<Presentation> {
     );
   }
 
-  void onPressed(int option) {
+  late bool isLogged;
+  Future<void> isUserLogged() async {
+    isLogged=await isLoggedIn();
+  }
+  Future<void> onPressed(int option) async {
     if (option == 0) {//login
+      await isUserLogged();
+      if (!mounted) return;
+      if(isLogged){
+        Navigator.push(
+          context,
+          PageTransition(
+            duration: const Duration(milliseconds: 500),
+            type: PageTransitionType.bottomToTop, 
+            child: const Home(),
+            childCurrent: const Presentation()
+          )
+        );
+      }else
       Navigator.push(
         context,
         PageTransition(

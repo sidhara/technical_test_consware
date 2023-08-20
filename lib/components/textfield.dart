@@ -8,6 +8,10 @@ class TextFieldCustom extends StatefulWidget {
   final Color color;
   final bool border;
   final Color borderColor;
+  final String helperText;
+  final bool numeric;
+  final bool enabled;
+  final double height;
 
   const TextFieldCustom({
     Key? key,
@@ -18,6 +22,10 @@ class TextFieldCustom extends StatefulWidget {
     this.border = false,
     this.borderColor = Colors.grey,
     required this.color,
+    this.helperText = '',
+    this.numeric = false,
+    this.enabled = true,
+    this.height = 70,
   }) : super(key: key);
 
   @override
@@ -35,12 +43,19 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      cursorColor: widget.color,
-      obscureText: hidden,
-      obscuringCharacter: "•",
-      controller: widget.controller,
-      decoration: InputDecoration(
+    return SizedBox(
+      height: widget.height!=70?widget.height:70,
+      child: TextFormField(
+        textAlignVertical: TextAlignVertical.bottom,
+        enabled: widget.enabled?true:false,
+        keyboardType: widget.numeric?TextInputType.number:TextInputType.text,
+        cursorColor: widget.color,
+        obscureText: hidden,
+        obscuringCharacter: "•",
+        controller: widget.controller,
+        decoration: InputDecoration(
+          hintText: widget.text,
+          helperText: widget.helperText!=''?widget.helperText:null,
           focusColor: widget.color,
           labelStyle: const TextStyle(
             color: Colors.black,
@@ -58,7 +73,6 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
             borderSide: BorderSide(color: widget.color, width: 2),
           ),
           border: const OutlineInputBorder(),
-          labelText: widget.text,
           prefixIcon: widget.password
               ? const Icon(Icons.lock,color:Colors.grey)
               : widget.user ? const Icon(Icons.person,color:Colors.grey):null,
@@ -72,7 +86,9 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
                     });
                   },
                 )
-              : null),
+              : null
+        ),
+      )
     );
   }
 }

@@ -11,7 +11,8 @@ const String splash1 = 'assets/splash1.png', splash2 = 'assets/splash2.png',
   conswareLogo='assets/consware-logo.png',bgDraw1='assets/bg-draw-r.png',
   bankLogo='assets/logo.png',bgDraw2='assets/bg-draw-l.png',
   bgDraw3='assets/bg-draw-c.png',googleLogo='assets/google-logo.png',
-  appleLogo='assets/apple-logo.png',registerLogo='assets/register-logo.png';
+  appleLogo='assets/apple-logo.png',registerLogo='assets/register-logo.png',
+  handLogo='assets/hand-emoji.png';
 
 double getDeviceWidth(BuildContext context) {
   return MediaQuery.of(context).size.width;
@@ -74,7 +75,7 @@ Future<void> passToNextSplash(
           PageTransition(
             duration: const Duration(seconds: 1),
             type: PageTransitionType.fade, 
-            child: const Presentation(),//isLoggedIn()?const Home():const Login(),
+            child: const Presentation(),
             childCurrent: Splash(color: colorCurrentSplash,imgRoute: imgRouteCurrentSplash)
           ),
           (route) => false
@@ -100,9 +101,11 @@ Future<void> passToNextSplash(
   );   
 }
 
-bool isLoggedIn(){
-  //in development
-  return true;
+Future<bool> isLoggedIn() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? isLoggedIn = prefs.getString('isLoggedIn');
+  if(isLoggedIn=='true')return true;
+  else return false;
 }
 
 Future<String> register(String name,String id,String email,String password) async {

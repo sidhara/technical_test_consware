@@ -314,7 +314,7 @@ class _SignUpState extends State<SignUp> {
         if (!context.mounted) return;//to control passing context between async process
         Navigator.pop(context);
         if(response=="successful"){
-          login(emailController.text, passwordController.text, false);
+          login(emailController.text, passwordController.text, true);
           Navigator.pushAndRemoveUntil(
             context,
             PageTransition(
