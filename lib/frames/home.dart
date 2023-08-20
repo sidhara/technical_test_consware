@@ -1,8 +1,10 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:technical_test_consware/components/buttons.dart';
 import 'package:technical_test_consware/components/colors.dart';
 import 'package:technical_test_consware/components/textfield.dart';
+import 'package:technical_test_consware/frames/simulation_results.dart';
 import 'package:technical_test_consware/logic.dart/logic.dart';
 import 'package:intl/intl.dart';
 
@@ -335,7 +337,19 @@ class _HomeState extends State<Home> {
           else if(getSelectedItem()==dropdownlist[0]||getSelectedItem()=='')
             alertPopUp(context, errorText[0], errorText[3]);
           else{
-            print('successful');
+            Navigator.push(
+              context,
+              PageTransition(
+                duration: const Duration(milliseconds: 500),
+                type: PageTransitionType.bottomToTop, 
+                child: SimulationResults(
+                  creditType: getSelectedItem(),
+                  months: monthController.text,
+                  salary: salaryController.text,
+                ),
+                childCurrent: const Home()
+              )
+            );
           }
         }
       } catch (e) {
