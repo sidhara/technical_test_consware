@@ -82,7 +82,7 @@ class _SignUpState extends State<SignUp> {
     return Positioned(
         width: width - 10,
         left: 5,
-        bottom: percentage(height, 81),
+        top: percentage(height, 9),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -105,7 +105,7 @@ class _SignUpState extends State<SignUp> {
     return Positioned(
       width: width - 20,
       left: 10,
-      bottom: percentage(height, 74),
+      top: percentage(height, 18),
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
