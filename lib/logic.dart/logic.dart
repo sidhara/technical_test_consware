@@ -1,10 +1,14 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 import 'package:technical_test_consware/components/splash_screen.dart';
 import 'package:technical_test_consware/frames/presentation.dart';
+import 'dart:math';
 
 const String splash1 = 'assets/splash1.png', splash2 = 'assets/splash2.png', 
   primitiveSlothLogoDark='assets/Primitive_Sloth_Software_Logo_Dark.png',
@@ -175,6 +179,46 @@ Future<String?> getNameLoggedUser() async {
     }
   }
   return null;
+}
+
+List<List<double>> generateTable(double salary, int months,double interestsGeneral){
+  double lentAmount=(salary*7)/0.15;
+
+  double cuotaN=1;
+  double valCuota=(lentAmount*interestsGeneral)/(1-pow((1+interestsGeneral),cuotaN));
+  double interests=lentAmount*interestsGeneral;
+  double abono=valCuota-interests;
+  double saldo=lentAmount-abono;
+
+  List<List<double>> table = 
+  [//#cuota|valCuota|interes|capital|saldo
+    [cuotaN,valCuota,interests,abono,saldo],
+  ];
+  while(saldo>0){
+    cuotaN++;
+    valCuota=(lentAmount*interestsGeneral)/(1-pow((1+interestsGeneral),cuotaN));
+    interests=lentAmount*interestsGeneral;
+    abono=valCuota-interests;
+    saldo=lentAmount-abono;
+    table.add([cuotaN,valCuota,interests,abono,saldo]);
+  }
+  return table;
+}
+
+Future<String>createExcel(String name)async{
+  final Workbook workbook=Workbook();
+  //write
+  final Worksheet sheet=workbook.worksheets[0];
+  sheet.getRangeByName('A1').setText('to write');
+  //save file to download
+  final List<int>bytes=workbook.saveAsStream();
+  workbook.dispose();
+  final String path=(await getApplicationSupportDirectory()).path;
+  final String fileName='$path/$name.xlsx';
+  final File file=File(fileName);
+  await file.writeAsBytes(bytes,flush: true);
+  //OpenFile.open(fileName);
+  return fileName;
 }
 
 void alertPopUp(BuildContext context,String title,String content){

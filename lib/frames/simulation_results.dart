@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
 import 'package:technical_test_consware/components/buttons.dart';
 import 'package:technical_test_consware/components/colors.dart';
@@ -18,6 +20,8 @@ class _SimulationResultsState extends State<SimulationResults> {
   late final double width = getDeviceWidth(context),
       height = getDeviceHeight(context);
 
+  late List<List<double>> tabla;
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +30,15 @@ class _SimulationResultsState extends State<SimulationResults> {
 
   @override
   Widget build(BuildContext context) {
+    double interest;
+    if(widget.creditType=='Crédito de vehículo')
+      interest=0.03;
+    else if(widget.creditType=='Crédito de vivienda')
+      interest=0.01;
+    else
+      interest=0.035;
+
+    //tabla=generateTable(double.parse(widget.salary), int.parse(widget.months), interest);
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -43,7 +56,8 @@ class _SimulationResultsState extends State<SimulationResults> {
               subtitle('Tabla de créditos'),
               tableButton(),
               downloadButton('Descargar tabla'),
-              saveButton('Guardar cotización')
+              saveButton('Guardar cotización'),
+              table()
             ]
           )
         )
@@ -150,6 +164,28 @@ class _SimulationResultsState extends State<SimulationResults> {
     );
   }
 
+  Positioned table(){
+    return Positioned(
+      width: percentage(width, 90),
+      left: percentage(width, 5),
+      top: percentage(height, 35),
+      child: SingleChildScrollView(
+        //scrollDirection: Axis.vertical,
+        child: Table(
+          border: TableBorder.all(color: Colors.grey),
+          children: [
+            TableRow(
+              children: 
+                ['No. Cuota','Valor de cuota','Interés','Abono a capital','Saldo periodo','Saldo inicial'].map(
+                  (cell) => Text(cell)
+                ).toList()
+            )
+          ],
+        )
+      ) 
+    );
+  }
+
   Positioned downloadButton(String text){
     return Positioned(
       width: percentage(width, 90),
@@ -192,7 +228,7 @@ class _SimulationResultsState extends State<SimulationResults> {
       //out of scope
       alertPopUp(context, notificationText[2], notificationText[3]);
     }else if (option == 2){//download table
-
+      print(tabla);
     }else{//save table
 
     }
